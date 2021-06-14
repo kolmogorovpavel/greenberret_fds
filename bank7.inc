@@ -319,25 +319,21 @@ loc_EA75:
 
 ; =============== S U B	R O U T	I N E =======================================
 _read_pads:
-		LDX		byte_FB
-		INX
-		STX		_PAD0_REG
-		DEX
-		STX		_PAD0_REG
-		LDX		#$08
+		LDA		#$01
+		STA		_PAD0_REG
+		STA		_pads_press+1
+		LSR
+		STA		_PAD0_REG
 loc_E9F7:
 		LDA		_PAD0_REG
-		LSR
+		AND		#%00000011
+		CMP		#$01
 		ROL		_pads_press
-		LSR
-		ROL		word_0
 		LDA		_PAD1_REG
-		LSR
+		AND		#%00000011
+		CMP		#$01
 		ROL		_pads_press+1
-		LSR
-		ROL		word_0+1
-		DEX
-		BNE		loc_E9F7
+		BCC		loc_E9F7
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -356,12 +352,12 @@ loc_EA27:
 
 ; =============== S U B	R O U T	I N E =======================================
 _merge_pads:
-		LDA		word_0
-		ORA		_pads_press
-		STA		_pads_press
-		LDA		word_0+1
-		ORA		_pads_press+1
-		STA		_pads_press+1
+		LDA		_pads_press
+		ORA		word_0
+		STA		word_0
+		LDA		_pads_press+1
+		ORA		word_0+1
+		STA		word_0+1
 		RTS
 
 ; =============== S U B	R O U T	I N E =======================================
